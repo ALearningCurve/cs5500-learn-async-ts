@@ -1,8 +1,8 @@
 function sum2DArray(arr: number[][]): Promise<number> {
     return new Promise((resolve, reject) => {
         console.log('Sum called ... ');
-        if(arr.length === 0) {
-            reject('Cannot sum an empty array');
+        if (arr.length === 0) {
+            return reject('Cannot sum an empty array');
         }
         setTimeout(() => {
             let sum = 0;
@@ -26,7 +26,13 @@ const array2D = [
 ];
 
 const sumPromise1 = sum2DArray(array2D);
-console.log('sumPromise1:', sumPromise1);
+console.log(sumPromise1);
+sumPromise1
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
 
 const sumPromise2 = sum2DArray([]);
-console.log('sumPromise2:', sumPromise2);
+console.log(sumPromise2);
+sumPromise2
+    .then(res => console.log(res))
+    .catch(err => console.error(err));

@@ -1,1 +1,22 @@
 Explain the code execution based on the order of the messages logged in src/quiz/promise-2darray.txt.
+
+The code does not produce a result because we do not await the promises resolving. We see this is the case by following the execution: 
+
+First, for sumPromise1, sum2DArray is called (hence the first "sum called"), the promise is created, the work of summing the array is scheduled on the event queue (because of setTimeout), and the function creating the promise returns the promise in a pending state (we know from the console log).
+
+Second, for sumPromise2, sum2DArray is called (hence the second "sum called") and then promise constructor is called. Because the array is empty, it causes the promise to be rejected in the if statement right before the set timeout is called. Note, the setTimeout is still called since there is no return following the reject, which is why we see the message "returning from sum". This promise is returned in a rejected state. 
+
+Because there is no 'catch' handler for the second rejected promise, this causes the program to crash with the "UnhandledPromiseRejection" before code in setTimeout for sumPromise1 can be executed.
+
+
+
+Output:
+Sum called ... 
+returning from sum
+sumPromise1: Promise { <pending> }
+Sum called ...
+returning from sum
+sumPromise2: Promise { <rejected> 'Cannot sum an empty array' }
+[UnhandledPromiseRejection: This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason "Cannot sum an empty array".] {
+  code: 'ERR_UNHANDLED_REJECTION'
+}
