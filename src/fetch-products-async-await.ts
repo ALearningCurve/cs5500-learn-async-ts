@@ -10,7 +10,7 @@ async function fetchProducts(): Promise<string> {
             throw new Error(`HTTP error: ${response.status}`);
         }
 
-        const data: { name: string }[] = await response.json();
+        const data: { name: string; }[] = await response.json();
         console.log('response created');
         return data[0].name;
     } catch (error) {
@@ -19,7 +19,7 @@ async function fetchProducts(): Promise<string> {
 }
 
 async function main(): Promise<void> {
-    console.log('Begin main ... ');
+    console.log('Begin main ...');
     try {
         const productName = await fetchProducts();
         console.log(productName);

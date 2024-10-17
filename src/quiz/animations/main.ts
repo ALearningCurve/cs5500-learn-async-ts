@@ -13,36 +13,28 @@ const alice10 = document.querySelector<HTMLElement>("#alice1");
 const alice20 = document.querySelector<HTMLElement>("#alice2");
 const alice30 = document.querySelector<HTMLElement>("#alice3");
 
-if(alice10 && alice20 && alice30) {
-  // Promise chain  
-  alice10.animate(aliceTumbling1, aliceTiming1).finished  
-    .then(() => {
-        return alice20
-                .animate(aliceTumbling1, aliceTiming1)
-                .finished;     
-    })
-    .then(() => {
-      return alice30
-              .animate(aliceTumbling1, aliceTiming1)
-              .finished;
-    })
-    .catch((err) => alert(`Error when promising ... ${err.message}`));
-}
-else{
-  console.warn("#alice not found");
+async function runAnimation(element: HTMLElement | null, id: string) {
+  if (element === null) {
+    console.warn(`${id} not found`);
+  } else {
+    await element
+      .animate(aliceTumbling1, aliceTiming1)
+      .finished;
+  }
 }
 
-// alice10
-//     .animate(aliceTumbling1, aliceTiming1)
-//     .finished
-//     .then((res) => {
-//         console.log(res);
-//         alice20
-//             .animate(aliceTumbling1, aliceTiming1)
-//             .finished
-//             .then((res) => {
-//                 console.log(res);
-//                 alice30.animate(aliceTumbling1, aliceTiming1);
-//             })
-//     });
-  
+async function sequentiallyAnimate() {
+  try {
+    await runAnimation(alice10, "#alice1");
+    await runAnimation(alice20, "#alice2");
+    await runAnimation(alice30, "#alice3");
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(`Error when animating: ${err.message}`);
+    } else {
+      console.log(`Error when animating: An unknown error occurred`);
+    }
+  }
+}
+
+sequentiallyAnimate();
